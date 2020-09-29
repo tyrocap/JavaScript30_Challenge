@@ -1,4 +1,4 @@
-JavaScript 30-Day Challenge
+# JavaScript 30-Day Challenge
 
 ### Project 1 - Calculator Demo [DAY 1]
 
