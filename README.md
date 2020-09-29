@@ -2,4 +2,4 @@
 
 
 ### Demo
-![Calculator Demo](calculator.gif)
+![Calculator Demo](calculator/calculator.gif)
