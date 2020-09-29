@@ -1,5 +1,5 @@
 "# JavaScript30_Challenge"
 
-### Demo
+### Project #1 - Demo Calculator [DAY 1]
 
 ![Calculator Demo](Calculator/calculator.gif)
