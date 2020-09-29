@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="calculator.css" />
+		<head>
+  		<link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+  		<script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+	</head>
+	<body>
+		<div class="container">
+			<div class="calculator">
+				<div class="headerField">
+					<h1>Calculator</h1>
+				</div>
+				<div class="inputField">
+					<input
+						class="displayField"
+						type="text"
+						value=""
+					/>
+				</div>
+				<div class="buttonField">
+					<div class="buttonRow">
+						<button class="btn" value="%">%</button>
+						<button class="btn" value="CE">CE</button>
+						<button class="btn" value="C">C</button>
+						<button id="deleteSign" class="btn" value="">
+							<span class="material-icons">
+								backspace
+							</span>
+						</button>
+					</div>
+					<div class="buttonRow">
+						<button id="inverseSign" class="btn" value="">
+							1/<em>x</em>
+						</button>
+						<button id="squareSign" class="btn" value="">
+							<em>x</em>*2
+						</button>
+						<button id="sqrtSign" class="btn" value="">
+							&#8730<em>x</em>
+						</button>
+						<button class="btn" value="/">/</button>
+					</div>
+					<div class="buttonRow">
+						<button class="btn" value="7">7</button>
+						<button class="btn" value="8">8</button>
+						<button class="btn" value="9">9</button>
+						<button class="btn" value="x">
+							<span class="material-icons">
+								clear
+							</span>
+						</button>
+					</div>
+					<div class="buttonRow">
+						<button class="btn" value="4">4</button>
+						<button class="btn" value="5">5</button>
+						<button class="btn" value="6">6</button>
+						<button class="btn" value="-">
+							<span class="material-icons">
+								remove
+							</span>
+						</button>
+					</div>
+					<div class="buttonRow">
+						<button class="btn" value="1">1</button>
+						<button class="btn" value="2">2</button>
+						<button class="btn" value="3">3</button>
+						<button class="btn" value="+">
+							<span class="material-icons">
+							add
+							</span>
+						</button>
+					</div>
+					<div class="buttonRow">
+						<button class="btn">+/-</button>
+						<button class="btn" value="0">0</button>
+						<button class="btn">.</button>
+						<button id="equalSign" class="btn">
+							<span class="material-icons">
+							drag_handle
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		// new function implementations
+		function isalpha(c) {
+			return (
+				(c >= "a" && c <= "z") || (c >= "A" && c <= "Z")
+			);
+		}
+
+		function isdigit(c) {
+			return c >= "0" && c <= "9";
+		}
+
+		function isalnum(c) {
+			return isalpha(c) || isdigit(c);
+		}
+
+		// main body
+		var buttonStack = [];
+
+		// operand & operator buttons function
+		$(".btn").click(function () {
+			// receive the input
+			let fired_button = $(this).val();
+
+			if (fired_button.length != 0) {
+				// accout for multiple digit numbers
+				if (
+					isdigit(buttonStack[buttonStack.length - 1]) &&
+					isdigit(fired_button)
+				) {
+					buttonStack[
+						buttonStack.length - 1
+					] += fired_button;
+				} else {
+					// buttonStack[last] is a sign || fired_button is not a digit
+					if (buttonStack.length < 3) {
+						buttonStack.push(fired_button);
+					} else {
+						buttonStack.pop();
+						buttonStack.push(fired_button);
+					}
+				}
+				$(".displayField").val(
+					buttonStack[buttonStack.length - 1]
+				);
+			}
+			console.log(buttonStack);
+		});
+
+		// equal button function
+		$("#equalSign").click(function () {
+			let num1 = parseInt(buttonStack[0]);
+			let num2 = parseInt(buttonStack[2]);
+			let sign = buttonStack[1];
+
+			// compute
+			// TODO: make array/computation consistent in terms of type
+			let result = null;
+			if (sign == "+") {
+				result = num1 + num2;
+			} else if (sign == "-") {
+				result = num1 - num2;
+			} else if (sign == "x") {
+				result = num1 * num2;
+			} else if (sign == "/") {
+				result = num1 / num2;
+			} else if (sign == "%") {
+				result = num1 * (num2 / 100);
+			}
+
+			// populate the result
+			$(".displayField").val(result);
+			buttonStack.splice(0, buttonStack.length);
+			buttonStack.push(toString(result));
+			console.log(result);
+		});
+
+		// delete
+		$("#deleteSign").click(function () {
+			$(".displayField").val("");
+			buttonStack.splice(0, buttonStack.length);
+		});
+
+		// inverse
+		$("#inverseSign").click(function () {
+			let result = 1 / buttonStack[buttonStack.length - 1];
+			$(".displayField").val(result);
+			buttonStack.push(result);
+		});
+
+		// square
+		$("#squareSign").click(function () {
+			let result = Math.pow(
+				buttonStack[buttonStack.length - 1],
+				2
+			);
+			$(".displayField").val(result);
+			buttonStack.push(result);
+		});
+
+		// square root
+		$("#sqrtSign").click(function () {
+			let result = Math.sqrt(
+				buttonStack[buttonStack.length - 1]
+			);
+			$(".displayField").val(result);
+			buttonStack.push(result);
+		});
+	</script>
+</html>
