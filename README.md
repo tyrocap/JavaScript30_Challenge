@@ -1,5 +1,5 @@
-"# JavaScript30_Challenge" 
-
+"# JavaScript30_Challenge"
 
 ### Demo
-![Calculator Demo](calculator/calculator.gif)
+
+![Calculator Demo](Calculator/calculator.gif)
