@@ -4,7 +4,6 @@
 		<link rel="stylesheet" href="calculator.css" />
 		<head>
   		<link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-  		<script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
 	</head>
@@ -136,7 +135,7 @@
 				$(".displayField").val(
 					buttonStack[buttonStack.length - 1]
 				);
-				
+
 				// TODO: come up with a better way to display (dynamic) buttonStack content
 				if (buttonStack.length == 1) {
 					$(".upperDisplayField").val(buttonStack[0]);		
@@ -187,7 +186,7 @@
 		$("#deleteSign").click(function () {
 			let result = null;
 			if (isdigit(buttonStack[buttonStack.length - 1][0])) {
-				result = buttonStack[buttonStack.length - 1].substring(0, buttonStack.length - 2);
+				result = buttonStack[buttonStack.length - 1].slice(0, buttonStack.length - 2);
 				buttonStack[buttonStack.length - 1] = result;
 			}
 			$(".displayField").val(result);
