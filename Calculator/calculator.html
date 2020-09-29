@@ -16,6 +16,11 @@
 				</div>
 				<div class="inputField">
 					<input
+						class="upperDisplayField"
+						type="text"
+						value=""
+					/>
+					<input
 						class="displayField"
 						type="text"
 						value=""
@@ -24,7 +29,7 @@
 				<div class="buttonField">
 					<div class="buttonRow">
 						<button class="btn" value="%">%</button>
-						<button class="btn" value="CE">CE</button>
+						<button id="deleteAllSign" class="btn" value="">CE</button>
 						<button class="btn" value="C">C</button>
 						<button id="deleteSign" class="btn" value="">
 							<span class="material-icons">
@@ -116,12 +121,9 @@
 			if (fired_button.length != 0) {
 				// accout for multiple digit numbers
 				if (
-					isdigit(buttonStack[buttonStack.length - 1]) &&
-					isdigit(fired_button)
+					isdigit(buttonStack[buttonStack.length - 1]) && isdigit(fired_button)
 				) {
-					buttonStack[
-						buttonStack.length - 1
-					] += fired_button;
+					buttonStack[buttonStack.length - 1] += fired_button;
 				} else {
 					// buttonStack[last] is a sign || fired_button is not a digit
 					if (buttonStack.length < 3) {
@@ -134,6 +136,15 @@
 				$(".displayField").val(
 					buttonStack[buttonStack.length - 1]
 				);
+				
+				// TODO: come up with a better way to display (dynamic) buttonStack content
+				if (buttonStack.length == 1) {
+					$(".upperDisplayField").val(buttonStack[0]);		
+				} else if (buttonStack.length == 2) {
+					$(".upperDisplayField").val(buttonStack[0] + " " + buttonStack[1]);		
+				} else {
+					$(".upperDisplayField").val(buttonStack[0] + " " + buttonStack[1] + " " + buttonStack[2]);		
+				}
 			}
 			console.log(buttonStack);
 		});
@@ -162,15 +173,26 @@
 			// populate the result
 			$(".displayField").val(result);
 			buttonStack.splice(0, buttonStack.length);
-			buttonStack.push(toString(result));
-			console.log(result);
+			buttonStack.push(result.toString());
+			console.log(buttonStack);
 		});
 
-		// delete
-		$("#deleteSign").click(function () {
+		// delete all
+		$("#deleteAllSign").click(function () {
 			$(".displayField").val("");
 			buttonStack.splice(0, buttonStack.length);
 		});
+
+		// delete char
+		$("#deleteSign").click(function () {
+			let result = null;
+			if (isdigit(buttonStack[buttonStack.length - 1][0])) {
+				result = buttonStack[buttonStack.length - 1].substring(0, buttonStack.length - 2);
+				buttonStack[buttonStack.length - 1] = result;
+			}
+			$(".displayField").val(result);
+		});
+
 
 		// inverse
 		$("#inverseSign").click(function () {
