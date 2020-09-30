@@ -6,7 +6,7 @@
 
 ![Calculator Demo](Calculator/calculator.gif)
 
-### Project 2 - Google Clone [DAY 2]
+### Project 2 - Google Clone Demo [DAY 2]
 
 #### React, HTML5, CSS3
 
