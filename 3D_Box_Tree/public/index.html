@@ -67,9 +67,17 @@
 
 			var paleOak = new THREE.Color("rgb(255, 243, 224)");
 
+			// OBJ FILE (WALL THAT HAS DOOR)
 			// OBJ FILE LOADERS
 			var objLoader = new THREE.OBJLoader();
 			var mtlLoader = new THREE.MTLLoader();
+
+			var material3 = new THREE.MeshStandardMaterial({
+				color: 0xb0cee0,
+				shading: THREE.FlatShading,
+				metalness: 0,
+				roughness: 1,
+			});
 
 			new Promise((resolve) => {
 				mtlLoader.load(
@@ -82,6 +90,18 @@
 				materials.preload();
 				objLoader.setMaterials(materials);
 				objLoader.load("./objs/untitled.obj", (object) => {
+					object.traverse(function (child) {
+						if (child instanceof THREE.Mesh) {
+							child.material = material3;
+						}
+					});
+					object.scale.set(0.5, 2.5, 4);
+					object.position.x += 11.9;
+					object.position.y += 0.5;
+					object.position.z += 0;
+					object1.castShadow = true;
+					object1.receiveShadow = true;
+
 					scene.add(object);
 				});
 			});
@@ -202,7 +222,6 @@
 			scene.add(wall1);
 			scene.add(wall2);
 			scene.add(wall3);
-			scene.add(wall4);
 			scene.add(ambientLight);
 			scene.add(pointLight);
 
