@@ -14,7 +14,10 @@
 	</head>
 	<body>
 		<script src="js/three.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/three@0.116.1/examples/js/loaders/OBJLoader.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/three@0.116.1/examples/js/loaders/MTLLoader.js"></script>
 		<script src="js/orbitControls.js"></script>
+
 		<script>
 			// Our Javascript will go here.
 			// RENDERER
@@ -53,6 +56,36 @@
 			// SCENE
 			var scene = new THREE.Scene();
 
+			// CUSTOM COLORS
+			var lightOrange = new THREE.Color(
+				"rgb(242, 204, 170)"
+			);
+
+			var floorColor = new THREE.Color(
+				"rgb(204, 204, 204)"
+			);
+
+			var paleOak = new THREE.Color("rgb(255, 243, 224)");
+
+			// OBJ FILE LOADERS
+			var objLoader = new THREE.OBJLoader();
+			var mtlLoader = new THREE.MTLLoader();
+
+			new Promise((resolve) => {
+				mtlLoader.load(
+					"./objs/untitled.mtl",
+					(materials) => {
+						resolve(materials);
+					}
+				);
+			}).then((materials) => {
+				materials.preload();
+				objLoader.setMaterials(materials);
+				objLoader.load("./objs/untitled.obj", (object) => {
+					scene.add(object);
+				});
+			});
+
 			// A FLAT PLANE
 			var plane = new THREE.Mesh(
 				new THREE.PlaneGeometry(50, 50, 5, 5),
@@ -63,15 +96,10 @@
 			);
 			plane.rotateX(Math.PI / 2);
 
-			// CUSTOM COLORS
-			var lightOrange = new THREE.Color(
-				"rgb(242, 204, 170)"
-			);
-
 			// FLOOR
 			var geometry = new THREE.BoxGeometry(24, 30, 1);
 			var material = new THREE.MeshBasicMaterial({
-				color: lightOrange,
+				color: floorColor,
 			});
 			var cube = new THREE.Mesh(geometry, material);
 			cube.position.y += 0.5;
@@ -91,22 +119,61 @@
 			object1.castShadow = true;
 			object1.receiveShadow = true;
 
-			// OBJECT2
-			var geometry2 = new THREE.BoxGeometry(20, 2, 2);
+			// WALL 1&2 GEOMETRY & MATERIAL
+			var geometry2 = new THREE.BoxGeometry(24, 8, 0.1);
 			var material2 = new THREE.MeshStandardMaterial({
-				color: 0xff0051,
+				color: 0xb0cee0,
 				shading: THREE.FlatShading,
 				metalness: 0,
 				roughness: 1,
 			});
-			var object2 = new THREE.Mesh(geometry2, material2);
-			object2.position.y += 3;
-			object2.position.x += 0;
-			object2.position.z += 14;
 
-			// make obj1 shadow receivable
-			object2.castShadow = true;
-			object2.receiveShadow = true;
+			// WALL1
+			var wall1 = new THREE.Mesh(geometry2, material2);
+			wall1.position.y += 5;
+			wall1.position.x += 0;
+			wall1.position.z += 15;
+			// make wall1 shadow receivable
+			wall1.castShadow = true;
+			wall1.receiveShadow = true;
+
+			// WALL2
+			var wall2 = new THREE.Mesh(geometry2, material2);
+			wall2.position.y += 5;
+			wall2.position.x += 0;
+			wall2.position.z += -15;
+			// make wall2 shadow receivable
+			wall2.castShadow = true;
+			wall2.receiveShadow = true;
+
+			// WALL 3&4 GEOMETRY & MATERIAL
+			var geometry3 = new THREE.BoxGeometry(30, 8, 0.1);
+			var material3 = new THREE.MeshStandardMaterial({
+				color: 0xb0cee0,
+				shading: THREE.FlatShading,
+				metalness: 0,
+				roughness: 1,
+			});
+
+			// WALL3
+			var wall3 = new THREE.Mesh(geometry3, material3);
+			wall3.position.y += 5;
+			wall3.position.x += -12;
+			wall3.position.z += 0;
+			// make wall3 shadow receivable
+			wall3.castShadow = true;
+			wall3.receiveShadow = true;
+			wall3.rotation.y += Math.PI / 2;
+
+			// WALL4
+			var wall4 = new THREE.Mesh(geometry3, material3);
+			wall4.position.y += 5;
+			wall4.position.x += 12;
+			wall4.position.z += 0;
+			// make wall4 shadow receivable
+			wall4.castShadow = true;
+			wall4.receiveShadow = true;
+			wall4.rotation.y += Math.PI / 2;
 
 			// LIGHTS
 			// ambivalent light
@@ -132,7 +199,10 @@
 			scene.add(cube);
 			scene.add(plane);
 			scene.add(object1);
-			scene.add(object2);
+			scene.add(wall1);
+			scene.add(wall2);
+			scene.add(wall3);
+			scene.add(wall4);
 			scene.add(ambientLight);
 			scene.add(pointLight);
 
