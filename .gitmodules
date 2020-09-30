@@ -1,3 +1,6 @@
 [submodule "google2"]
 	path = google2
 	url = https://github.com/tyrocap/google2.git
+[submodule "nyc-hotspots2"]
+	path = nyc-hotspots2
+	url = https://github.com/tyrocap/nyc-hotspots2.git
