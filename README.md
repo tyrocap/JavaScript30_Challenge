@@ -5,3 +5,9 @@
 #### jQuery, HTML5, CSS3
 
 ![Calculator Demo](Calculator/calculator.gif)
+
+### Project 2 - Google Clone [DAY 2]
+
+#### React, HTML5, CSS3
+
+![Google Clone Demo](Google_Clone/google_clone_demo.gif)

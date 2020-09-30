@@ -1,0 +1,3 @@
+[submodule "google2"]
+	path = google2
+	url = https://github.com/tyrocap/google2.git
