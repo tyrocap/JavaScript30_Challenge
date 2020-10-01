@@ -17,34 +17,33 @@
 		<script src="https://cdn.jsdelivr.net/npm/three@0.116.1/examples/js/loaders/OBJLoader.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/three@0.116.1/examples/js/loaders/MTLLoader.js"></script>
 		<script src="js/orbitControls.js"></script>
-
 		<script>
-			// Our Javascript will go here.
-			// RENDERER
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera(
+				100,
+				window.innerWidth / window.innerHeight,
+				0.1,
+				1000
+			);
+
 			var renderer = new THREE.WebGLRenderer();
 			renderer.setSize(
 				window.innerWidth,
 				window.innerHeight
 			);
-			renderer.setClearColor(0xeeeeee);
-			document.body.appendChild(renderer.domElement);
-
-			// TURN ON SHADOWS
-			// WHICH ARE OFF BY DEFAULT
+			// shadows
 			renderer.shadowMap.enabled = true;
 			renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+			document.body.appendChild(renderer.domElement);
 
-			// CAMERA
-			var camera = new THREE.PerspectiveCamera(
-				45,
-				window.innerWidth / window.innerHeight,
-				1,
-				500
+			// additional settings
+			scene.background = new THREE.Color(
+				"rgb(118, 94, 255)"
 			);
-			camera.position.set(0, 0, 50);
-			camera.lookAt(0, 0, 0);
+			camera.position.x = 5;
+			camera.position.y = 10;
+			camera.position.z = 10;
 
-			// CAMERA CONTROL
 			var controls = new THREE.OrbitControls(
 				camera,
 				renderer.domElement
@@ -53,62 +52,27 @@
 				renderer.render(scene, camera);
 			});
 
-			// SCENE
-			var scene = new THREE.Scene();
+			// lights
+			var pointLight = new THREE.PointLight(
+				0x404040,
+				1,
+				5000,
+				2
+			);
+			pointLight.position.set(5, 20, 5);
+			pointLight.castShadow = true;
+			// shadows
+			pointLight.shadow.mapSize.width = 1024;
+			pointLight.shadow.mapSize.height = 1024;
 
-			// CUSTOM COLORS
-			var lightOrange = new THREE.Color(
-				"rgb(242, 204, 170)"
+			var ambientLight = new THREE.AmbientLight(
+				0x404040,
+				1
 			);
 
-			var floorColor = new THREE.Color(
-				"rgb(204, 204, 204)"
-			);
-
-			var paleOak = new THREE.Color("rgb(255, 243, 224)");
-
-			// OBJ FILE (WALL THAT HAS DOOR)
-			// OBJ FILE LOADERS
-			var objLoader = new THREE.OBJLoader();
-			var mtlLoader = new THREE.MTLLoader();
-
-			var material3 = new THREE.MeshStandardMaterial({
-				color: 0xb0cee0,
-				shading: THREE.FlatShading,
-				metalness: 0,
-				roughness: 1,
-			});
-
-			new Promise((resolve) => {
-				mtlLoader.load(
-					"./objs/untitled.mtl",
-					(materials) => {
-						resolve(materials);
-					}
-				);
-			}).then((materials) => {
-				materials.preload();
-				objLoader.setMaterials(materials);
-				objLoader.load("./objs/untitled.obj", (object) => {
-					object.traverse(function (child) {
-						if (child instanceof THREE.Mesh) {
-							child.material = material3;
-						}
-					});
-					object.scale.set(0.5, 2.5, 4);
-					object.position.x += 11.9;
-					object.position.y += 0.5;
-					object.position.z += 0;
-					object1.castShadow = true;
-					object1.receiveShadow = true;
-
-					scene.add(object);
-				});
-			});
-
-			// A FLAT PLANE
+			// plane
 			var plane = new THREE.Mesh(
-				new THREE.PlaneGeometry(50, 50, 5, 5),
+				new THREE.PlaneGeometry(10, 10, 5, 5),
 				new THREE.MeshBasicMaterial({
 					color: 0x222222,
 					wireframe: true,
@@ -116,114 +80,23 @@
 			);
 			plane.rotateX(Math.PI / 2);
 
-			// FLOOR
-			var geometry = new THREE.BoxGeometry(24, 30, 1);
-			var material = new THREE.MeshBasicMaterial({
-				color: floorColor,
+			// cube object
+			var geometry = new THREE.BoxGeometry(5, 5, 5);
+			var material = new THREE.MeshStandardMaterial({
+				color: 0x6c42f5,
 			});
 			var cube = new THREE.Mesh(geometry, material);
-			cube.position.y += 0.5;
-			cube.rotation.x += Math.PI / 2;
+			cube.castShadow = true;
+			cube.receiveShadow = true;
+			cube.position.y += 3;
+			//cube.rotation.x += 0.4;
+			//cube.rotation.y -= 0.6;
 
-			// OBJECT1
-			var geometry1 = new THREE.OctahedronGeometry(2, 1);
-			var material1 = new THREE.MeshStandardMaterial({
-				color: 0xff0051,
-				shading: THREE.FlatShading,
-				metalness: 0,
-				roughness: 1,
-			});
-			var object1 = new THREE.Mesh(geometry1, material1);
-			object1.position.y += 3;
-			// make obj1 shadow receivable
-			object1.castShadow = true;
-			object1.receiveShadow = true;
-
-			// WALL 1&2 GEOMETRY & MATERIAL
-			var geometry2 = new THREE.BoxGeometry(24, 8, 0.1);
-			var material2 = new THREE.MeshStandardMaterial({
-				color: 0xb0cee0,
-				shading: THREE.FlatShading,
-				metalness: 0,
-				roughness: 1,
-			});
-
-			// WALL1
-			var wall1 = new THREE.Mesh(geometry2, material2);
-			wall1.position.y += 5;
-			wall1.position.x += 0;
-			wall1.position.z += 15;
-			// make wall1 shadow receivable
-			wall1.castShadow = true;
-			wall1.receiveShadow = true;
-
-			// WALL2
-			var wall2 = new THREE.Mesh(geometry2, material2);
-			wall2.position.y += 5;
-			wall2.position.x += 0;
-			wall2.position.z += -15;
-			// make wall2 shadow receivable
-			wall2.castShadow = true;
-			wall2.receiveShadow = true;
-
-			// WALL 3&4 GEOMETRY & MATERIAL
-			var geometry3 = new THREE.BoxGeometry(30, 8, 0.1);
-			var material3 = new THREE.MeshStandardMaterial({
-				color: 0xb0cee0,
-				shading: THREE.FlatShading,
-				metalness: 0,
-				roughness: 1,
-			});
-
-			// WALL3
-			var wall3 = new THREE.Mesh(geometry3, material3);
-			wall3.position.y += 5;
-			wall3.position.x += -12;
-			wall3.position.z += 0;
-			// make wall3 shadow receivable
-			wall3.castShadow = true;
-			wall3.receiveShadow = true;
-			wall3.rotation.y += Math.PI / 2;
-
-			// WALL4
-			var wall4 = new THREE.Mesh(geometry3, material3);
-			wall4.position.y += 5;
-			wall4.position.x += 12;
-			wall4.position.z += 0;
-			// make wall4 shadow receivable
-			wall4.castShadow = true;
-			wall4.receiveShadow = true;
-			wall4.rotation.y += Math.PI / 2;
-
-			// LIGHTS
-			// ambivalent light
-			var ambientLight = new THREE.AmbientLight(
-				0xffffff,
-				0.2
-			);
-			// point light
-			var pointLight = new THREE.PointLight(0xffffff, 1);
-			pointLight.position.set(25, 50, 25);
-
-			// SHADOWING
-			pointLight.castShadow = true;
-			pointLight.shadow.mapSize.width = 1024;
-			pointLight.shadow.mapSize.height = 1024;
-
-			var shadowMaterial = new THREE.ShadowMaterial({
-				color: 0xeeeeee,
-			});
-			shadowMaterial.opacity = 0.5;
-
-			// ADDING ALL OBJECTS TO THE SCENE
-			scene.add(cube);
-			scene.add(plane);
-			scene.add(object1);
-			scene.add(wall1);
-			scene.add(wall2);
-			scene.add(wall3);
-			scene.add(ambientLight);
 			scene.add(pointLight);
+			scene.add(ambientLight);
+			scene.add(plane);
+
+			scene.add(cube);
 
 			renderer.render(scene, camera);
 		</script>
