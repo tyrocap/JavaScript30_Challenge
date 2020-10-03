@@ -1,0 +1,23 @@
+##########################
+1. Objects and array are reference types. In other words, when you do
+const person = {name: "Max", age: 23};
+const newPerson = person; // newPerson has a reference (a pointer) to 
+the original objects, not its copy. Constrast this with primitive types,
+where the same operations makes a copy:
+const oddNum = 3;
+const newNum = oddNum; // here newNum is the copy of oddNum, which means
+that when you change newNum, oddNum does not change.
+
+
+##########################
+2. React Hooks `useState` setState function (returned function) does not merge the old state 
+with new one that you set as is the case in the class based componenets.
+Instead, it replaces the object passed with the old state object.
+
+
+
+#########################
+3. Change state in immutable fashion - that is, when working with arrays and objects, make a copy of the 
+original array/object and change it, rather than changing original array/object.
+// let newArray = [...oldArray];
+
