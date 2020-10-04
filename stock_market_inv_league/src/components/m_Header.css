@@ -1,0 +1,6 @@
+.m_Header {
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+    padding-left: 50px;
+}
