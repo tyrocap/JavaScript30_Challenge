@@ -1,11 +1,12 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import ChartComponent from './Chart/b_Chart';
 
 const m_Body = () => {
 	return (
 		<div>
-			<div style={{ width: "950px", marginLeft: "450px" }}>
+			<div style={{ width: "60%", marginLeft: "450px" }}>
 				<TextField
 					size="small"
 					variant="outlined"
@@ -15,7 +16,7 @@ const m_Body = () => {
 			</div>
 			<div
 				style={{
-					width: "950px",
+					width: "60%",
 					marginLeft: "450px",
 					backgroundColor: "lightgray",
 				}}
@@ -26,7 +27,7 @@ const m_Body = () => {
 			</div>
 			<div
 				style={{
-					width: "950px",
+					width: "60%",
 					marginLeft: "450px",
 					backgroundColor: "lightgray",
 				}}
@@ -35,13 +36,13 @@ const m_Body = () => {
 			</div>
 			<div
 				style={{
-					width: "950px",
+					width: "60%",
 					height: "60vh",
 					marginLeft: "450px",
 					backgroundColor: "lightgray",
 				}}
 			>
-				<h1>Graph goes here</h1>
+				<ChartComponent />
 			</div>
 		</div>
 	);
