@@ -21,3 +21,17 @@ Instead, it replaces the object passed with the old state object.
 original array/object and change it, rather than changing original array/object.
 // let newArray = [...oldArray];
 
+
+#######################
+4. React keeps a copy of DOM - a virtual DOM is a very efficient way to work with the real DOM since the real
+DOM update/change is expensive. So what the react does is it keeps a virtual copy and compares the virtual with 
+the real one and it only changes the parts that are different, not the whole DOM. 
+
+
+#######################
+5. Setting state correctly - when you use this.setState, you should be careful if your updated state depends on the 
+previous state. This is so because in some cases, this.setState does not update the state right away but makes a 
+schedule to make changes. When that time comes, your previous state might be different and therefore you might have
+a different current state than expected. To corrent this, if you rely on prevState to update currState, use 
+this.setState((prevState, props) => {return {prevState.property: newPropertyValue};});
+
